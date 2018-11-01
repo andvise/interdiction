@@ -159,11 +159,12 @@ class InstanceMultifollower:
     r0 = 20
     arcs = []
     paths = []
+    npaths = 2;
 
     def set_r0(self, r0):
         self.r0 = r0
 
-    def set_args(self, m, n, k, c, d, r, r0):
+    def set_args(self, m, n, k, c, d, r, r0, npaths):
         self.m = m
         self.n = n
         self.K = k
@@ -173,14 +174,16 @@ class InstanceMultifollower:
         self.r0 = r0
         self.N = n * m
         self.a = 2 * (n - 2) * (5 * m - 4) + 3 * m - 2
+        self.npaths = npaths
 
     def node_nr(self, x, y):
         return self.m * (y - 1) + x + 1
 
-    def arcs_creator(self, seed, npaths):
-        self.paths = random.sample(range(1, self.N), npaths * 2)
+    def arcs_creator(self, seed):
         self.arcs = []
         random.seed(seed)
+        self.paths = random.sample(range(1, self.N), self.npaths * 2)
+
         for j in range(1, self.m + 1):
             for i in range(1, self.n + 1):
                 if i + 1 <= self.n and j != 1 and j != self.m:
