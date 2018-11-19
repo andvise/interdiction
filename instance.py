@@ -152,7 +152,7 @@ class InstanceMultifollower:
     n = 10
     N = n * m
     K = 1000
-    a = 2 * (n - 2) * (5 * m - 4) + 3 * m - 2
+    a = 2 * ((n - 2) * (5 * m - 4) + 3 * m - 2)
     c = 10
     d = 10
     r = 5
@@ -173,11 +173,11 @@ class InstanceMultifollower:
         self.r = r
         self.r0 = r0
         self.N = n * m
-        self.a = 2 * (n - 2) * (5 * m - 4) + 3 * m - 2
+        self.a = 2 * ((n - 2) * (5 * m - 4) + 3 * m - 2)
         self.npaths = npaths
 
     def node_nr(self, x, y):
-        return self.m * (y - 1) + x + 1
+        return self.m * (y - 1) + x
 
     def arcs_creator(self, seed):
         self.arcs = []
@@ -235,38 +235,43 @@ class InstanceMultifollower:
         file.write("K = " + str(self.K) + ";\n")
         file.write("M = " + str(self.a) + ";\n")
         file.write("R0 = " + str(self.r0) + ";\n")
-        for i in range(0, len(self.paths)/2):
-            file.write("Start_" + chr(97 + i) + " = " + self.paths[2*i] + ";\n")
-            file.write("End_" + chr(97 + i) + " = " + self.paths[2*i+1] + ";\n")
+        for i in range(0, len(self.paths)//2):
+            file.write("Start_" + chr(97 + i) + " = " + str(self.paths[2*i]) + ";\n")
+            file.write("End_" + chr(97 + i) + " = " + str(self.paths[2*i+1]) + ";\n")
 
         line = "Edge_Start =  ["
         for i in self.arcs[:-1]:
             line = line + str(i.start) + " ,"
-        line = line + str(self.arcs[-1].start) + "];\n"
+            line = line + str(i.end) + " ,"
+        line = line + str(self.arcs[-1].start) + " ," + str(self.arcs[-1].end) + "];\n"
         file.write(line)
 
         line = "Edge_End =  ["
         for i in self.arcs[:-1]:
             line = line + str(i.end) + " ,"
-        line = line + str(self.arcs[-1].end) + "];\n"
+            line = line + str(i.start) + " ,"
+        line = line + str(self.arcs[-1].end) + " ," + str(self.arcs[-1].start) + "];\n"
         file.write(line)
 
         line = "L =  ["
         for i in self.arcs[:-1]:
             line = line + str(i.length) + " ,"
-        line = line + str(self.arcs[-1].length) + "];\n"
+            line = line + str(i.length) + " ,"
+        line = line + str(self.arcs[-1].length) + " ," + str(self.arcs[-1].length) + "];\n"
         file.write(line)
 
         line = "D =  ["
         for i in self.arcs[:-1]:
             line = line + str(i.disruption) + " ,"
-        line = line + str(self.arcs[-1].disruption) + "];\n"
+            line = line + str(i.disruption) + " ,"
+        line = line + str(self.arcs[-1].disruption) + " ," + str(self.arcs[-1].disruption) + "];\n"
         file.write(line)
 
         line = "R =  ["
         for i in self.arcs[:-1]:
             line = line + str(i.cost) + " ,"
-        line = line + str(self.arcs[-1].cost) + "];\n"
+            line = line + str(i.cost) + " ,"
+        line = line + str(self.arcs[-1].cost) + " ," + str(self.arcs[-1].cost) + "];\n"
         file.write(line)
 
         file.close()
