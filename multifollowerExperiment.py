@@ -2,6 +2,7 @@ import time
 import numpy as np
 import instance
 import subprocess as sp
+from solvers import benders_multifollower
 
 
 problem = instance.InstanceMultifollower()
@@ -16,8 +17,8 @@ n_seeds = len(seeds)
 
 problem.set_args(10, 10, 100, 10, 10, 5, 20, followers)
 
-models_directory = "/home/andrea/interdiction/models/"
-data_directory = "/home/andrea/interdiction/"
+models_directory = "/Users/avisentin/PycharmProjects/interdiction/models/"
+data_directory = "/Users/avisentin/PycharmProjects/interdiction/data/"
 solver = "ORTools"
 output_name = "./test_multifollower" + str(followers) + ".csv"
 parameters = ""
@@ -31,7 +32,10 @@ for k in range(0, n_r):
     for i in range(0, n_seeds):
         problem.arcs_creator(seeds[i])
         data_name = data_directory + "data_multi_" + str(followers) + "_" + str(i) + ".dzn"
+        data_name_dat = data_directory + "data_multi_" + str(followers) + "_" + str(i) + ".dat"
         problem.write_dzn_file(data_name)
+        problem.write_dat_file(data_name_dat)
+        benders_multifollower.solve(data_name_dat)
 
         for j in range(0, n_models):
             start_time = time.time()

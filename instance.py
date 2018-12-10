@@ -239,39 +239,48 @@ class InstanceMultifollower:
             file.write("Start_" + chr(97 + i) + " = " + str(self.paths[2*i]) + ";\n")
             file.write("End_" + chr(97 + i) + " = " + str(self.paths[2*i+1]) + ";\n")
 
-        line = "Edge_Start =  ["
-        for i in self.arcs[:-1]:
-            line = line + str(i.start) + " ,"
-            line = line + str(i.end) + " ,"
-        line = line + str(self.arcs[-1].start) + " ," + str(self.arcs[-1].end) + "];\n"
-        file.write(line)
+        # Edge Start
+        file.write("Edge_Start =  [" + (" ,".join(str(x.start) + " ," + str(x.end) for x in self.arcs)) + "]\n")
 
-        line = "Edge_End =  ["
-        for i in self.arcs[:-1]:
-            line = line + str(i.end) + " ,"
-            line = line + str(i.start) + " ,"
-        line = line + str(self.arcs[-1].end) + " ," + str(self.arcs[-1].start) + "];\n"
-        file.write(line)
+        # Edge End
+        file.write("Edge_End =  [" + (" ,".join(str(x.end) + " ," + str(x.start) for x in self.arcs)) + "]\n")
 
-        line = "L =  ["
-        for i in self.arcs[:-1]:
-            line = line + str(i.length) + " ,"
-            line = line + str(i.length) + " ,"
-        line = line + str(self.arcs[-1].length) + " ," + str(self.arcs[-1].length) + "];\n"
-        file.write(line)
+        # L
+        file.write("L = [" + (" ,".join(str(x.length) + " ," + str(x.length) for x in self.arcs)) + "]\n")
 
-        line = "D =  ["
-        for i in self.arcs[:-1]:
-            line = line + str(i.disruption) + " ,"
-            line = line + str(i.disruption) + " ,"
-        line = line + str(self.arcs[-1].disruption) + " ," + str(self.arcs[-1].disruption) + "];\n"
-        file.write(line)
+        # D
+        file.write("D = [" + (" ,".join(str(x.disruption) + " ," + str(x.disruption) for x in self.arcs)) + "]\n")
 
-        line = "R =  ["
-        for i in self.arcs[:-1]:
-            line = line + str(i.cost) + " ,"
-            line = line + str(i.cost) + " ,"
-        line = line + str(self.arcs[-1].cost) + " ," + str(self.arcs[-1].cost) + "];\n"
-        file.write(line)
+        # Cost
+        file.write("R = [" + (" ,".join(str(x.cost) + " ," + str(x.cost) for x in self.arcs)) + "]\n")
+
+
+        file.close()
+
+    def write_dat_file(self, name):
+        file = open(name, "w+")
+        file.write(str(self.N) + "\n")
+        file.write(str(self.K) + "\n")
+        file.write(str(self.a) + "\n")
+        file.write(str(self.r0) + "\n")
+
+        # Path start and end
+        file.write("[" + (" ,".join(str(x) for x in self.paths[::2])) + "]\n")
+        file.write("[" + (" ,".join(str(x) for x in self.paths[1::2])) + "]\n")
+
+        # Edge Start
+        file.write("[" + (" ,".join(str(x.start) + " ," + str(x.end) for x in self.arcs)) + "]\n")
+
+        # Edge End
+        file.write("[" + (" ,".join(str(x.end) + " ," + str(x.start) for x in self.arcs)) + "]\n")
+
+        # L
+        file.write("[" + (" ,".join(str(x.length) + " ," + str(x.length) for x in self.arcs)) + "]\n")
+
+        # D
+        file.write("[" + (" ,".join(str(x.disruption) + " ," + str(x.disruption) for x in self.arcs)) + "]\n")
+
+        # Cost
+        file.write("[" + (" ,".join(str(x.cost) + " ," + str(x.cost) for x in self.arcs)) + "]\n")
 
         file.close()
