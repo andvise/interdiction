@@ -89,7 +89,7 @@ solve maximize z_a[Start_a] + z_b[Start_b] + z_c[Start_c];
 
 output ["Length a: ", show(z_a[Start_a]), "\n", 
 	"Length b: ", show(z_b[Start_b]), "\n",
-	"Length c: ", show(z_c[Start_c]), "\n"];
+	"Length c: ", show(z_c[Start_c])];
 
 %------------------------------------------------------------------------------%
 %------------------------------------------------------------------------------%

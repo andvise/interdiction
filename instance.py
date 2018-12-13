@@ -234,26 +234,25 @@ class InstanceMultifollower:
         file.write("N = " + str(self.N) + ";\n")
         file.write("K = " + str(self.K) + ";\n")
         file.write("M = " + str(self.a) + ";\n")
+        file.write("P = " + str(self.npaths) + ";\n")
         file.write("R0 = " + str(self.r0) + ";\n")
-        for i in range(0, len(self.paths)//2):
-            file.write("Start_" + chr(97 + i) + " = " + str(self.paths[2*i]) + ";\n")
-            file.write("End_" + chr(97 + i) + " = " + str(self.paths[2*i+1]) + ";\n")
+        file.write("Start = [" + (" ,".join(str(x) for x in self.paths[::2])) + "];\n")
+        file.write("End = [" + (" ,".join(str(x) for x in self.paths[1::2])) + "];\n")
 
         # Edge Start
-        file.write("Edge_Start =  [" + (" ,".join(str(x.start) + " ," + str(x.end) for x in self.arcs)) + "]\n")
+        file.write("Edge_Start =  [" + (" ,".join(str(x.start) + " ," + str(x.end) for x in self.arcs)) + "];\n")
 
         # Edge End
-        file.write("Edge_End =  [" + (" ,".join(str(x.end) + " ," + str(x.start) for x in self.arcs)) + "]\n")
+        file.write("Edge_End =  [" + (" ,".join(str(x.end) + " ," + str(x.start) for x in self.arcs)) + "];\n")
 
         # L
-        file.write("L = [" + (" ,".join(str(x.length) + " ," + str(x.length) for x in self.arcs)) + "]\n")
+        file.write("L = [" + (" ,".join(str(x.length) + " ," + str(x.length) for x in self.arcs)) + "];\n")
 
         # D
-        file.write("D = [" + (" ,".join(str(x.disruption) + " ," + str(x.disruption) for x in self.arcs)) + "]\n")
+        file.write("D = [" + (" ,".join(str(x.disruption) + " ," + str(x.disruption) for x in self.arcs)) + "];\n")
 
         # Cost
-        file.write("R = [" + (" ,".join(str(x.cost) + " ," + str(x.cost) for x in self.arcs)) + "]\n")
-
+        file.write("R = [" + (" ,".join(str(x.cost) + " ," + str(x.cost) for x in self.arcs)) + "];\n")
 
         file.close()
 
@@ -265,14 +264,14 @@ class InstanceMultifollower:
         file.write(str(self.r0) + "\n")
 
         # Path start and end
-        file.write("[" + (" ,".join(str(x) for x in self.paths[::2])) + "]\n")
-        file.write("[" + (" ,".join(str(x) for x in self.paths[1::2])) + "]\n")
+        file.write("[" + (" ,".join(str(x-1) for x in self.paths[::2])) + "]\n")
+        file.write("[" + (" ,".join(str(x-1) for x in self.paths[1::2])) + "]\n")
 
         # Edge Start
-        file.write("[" + (" ,".join(str(x.start) + " ," + str(x.end) for x in self.arcs)) + "]\n")
+        file.write("[" + (" ,".join(str(x.start-1) + " ," + str(x.end-1) for x in self.arcs)) + "]\n")
 
         # Edge End
-        file.write("[" + (" ,".join(str(x.end) + " ," + str(x.start) for x in self.arcs)) + "]\n")
+        file.write("[" + (" ,".join(str(x.end-1) + " ," + str(x.start-1) for x in self.arcs)) + "]\n")
 
         # L
         file.write("[" + (" ,".join(str(x.length) + " ," + str(x.length) for x in self.arcs)) + "]\n")
