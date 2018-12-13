@@ -54,8 +54,10 @@ def solve(datafile):
         lbs = [0.0] * num_paths
         ubs = [k] * num_paths
         for j in range(num_paths):
-            if end_path[j] == i + 1: objs[j] = 1.0
-            if start_path[j] == i + 1: ubs[j] = 0.0
+            if end_path[j] == i:
+                objs[j] = 1.0
+            if start_path[j] == i:
+                ubs[j] = 0.0
         pi[i] = cpx.variables.add(obj=objs, lb=lbs, ub=ubs)
 
         # Objective: Minimize the sum of fixed costs for using a location
@@ -77,7 +79,7 @@ def solve(datafile):
             if edge_end[j] != start_path[i]:
                 cpx.linear_constraints.add(
                     lin_expr=[cplex.SparsePair(
-                        ind=[pi[edge_end[j]-1][i], pi[edge_start[j]-1][i], x[k]], val=[1.0, -1.0, r[j]])],
+                        ind=[pi[edge_end[j]][i], pi[edge_start[j]][i], x[j]], val=[1.0, -1.0, -r[j]])],
                     senses=["L"],
                     rhs=[length_[j]])
 
@@ -121,10 +123,11 @@ def solve(datafile):
     print("Optimal value:", cpx.solution.get_objective_value())
     tol = cpx.parameters.mip.tolerances.integrality.get()
     values = cpx.solution.get_values()
-    # for j in [x for x in range(num_locations) if values[open_[x]] >= 1.0 - tol]:
-    #     print("Facility {0} is open, it serves clients {1}".format(
-    #         j, " ".join([str(x) for x in range(num_clients)
-    #                      if values[supply[x][j]] >= 1.0 - tol])))
+    for x in range(num_paths):
+        print("Path " + str(x+1) + " has length " + str(values[pi[end_path[x]][x]]) + "\n")
+    for x in range(num_paths):
+        print("Path " + str(x+1) + " starts " + str(values[pi[start_path[x]][x]]) + "\n")
+
 
 
 
