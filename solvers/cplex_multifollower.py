@@ -35,7 +35,7 @@ class CplexMultifollower:
         cpx.set_error_stream(None)
         cpx.set_warning_stream(None)
         cpx.set_results_stream(None)
-
+        cpx.parameters.threads.set(4)
         # Create variables. We have variables
         # x[i]              if arc i is interdicted
         # pi[j][k]          minimum distance of j from the source of path k

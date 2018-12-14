@@ -8,9 +8,9 @@ from solvers import cplex_multifollower
 problem = instance.InstanceMultifollower()
 solvers = []
 
-models_directory = "/Users/avisentin/PycharmProjects/interdiction/models/"
+models_directory = "/home/andrea/interdiction/models/"
 sol = minizinc_caller.MinizincCaller()
-sol.setminizinc("/Applications/MiniZincIDE.app/Contents/Resources/")
+sol.setminizinc("")
 sol.setmodel(models_directory + "interdiction_multifollower_CP.mzn")
 sol.setsolver("ORTools")
 sol.setname("CP with ORTools")
@@ -40,13 +40,15 @@ num_sol = len(solvers)
 
 r = [20, 30, 40, 50]
 num_r = len(r)
-followers = 3
+followers = 2
+n = 50
+m = 50
 seeds = [1234, 1989, 290889]#, 251091, 240664, 190364, 120863, 101295, 31089, 3573113]
 num_seeds = len(seeds)
 
-problem.set_args(10, 10, 100, 10, 10, 5, 20, followers)
-data_directory = "/Users/avisentin/PycharmProjects/interdiction/data/"
-output_name = "./test_multifollower" + str(followers) + ".csv"
+problem.set_args(n,m , 100, 10, 10, 5, 20, followers)
+data_directory = "/home/andrea/interdiction/data/"
+output_name = "./test_multifollower" + str(followers) + "_" + str(n) + "_" + str(m) + ".csv"
 
 res = np.zeros((num_r, num_sol, num_seeds))
 
