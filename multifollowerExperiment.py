@@ -3,17 +3,37 @@ import numpy as np
 import instance
 from solvers import minizinc_caller
 from solvers import cplex_multifollower
+from solvers import ortools_sat_multifollower
+from solvers import ortools_cp_multifollower
 
 
 problem = instance.InstanceMultifollower()
 solvers = []
 
-models_directory = "/home/andrea/interdiction/models/"
+# models_directory = "/home/andrea/interdiction/models/"
+models_directory = "/Users/avisentin/PycharmProjects/interdiction/models/"
+
 sol = minizinc_caller.MinizincCaller()
-sol.setminizinc("")
+sol.setminizinc("/Applications/MiniZincIDE.app/Contents/Resources/")
 sol.setmodel(models_directory + "interdiction_multifollower_CP.mzn")
 sol.setsolver("ORTools")
 sol.setname("CP with ORTools")
+solvers.append(sol)
+
+
+sol = minizinc_caller.MinizincCaller()
+sol.setminizinc("/Applications/MiniZincIDE.app/Contents/Resources/")
+sol.setmodel(models_directory + "interdiction_multifollower_MIPdual.mzn")
+sol.setsolver("CPLEX")
+sol.setname("MIP with CPLEX")
+solvers.append(sol)
+
+# sol = ortools_cp_multifollower.ORToolsCPMultifollower()
+# sol.setname(x"ORtools CP solver")
+# solvers.append(sol)
+
+sol = ortools_sat_multifollower.ORToolsSatMultifollower()
+sol.setname("ORtools sat solver")
 solvers.append(sol)
 
 sol = cplex_multifollower.CplexMultifollower()
@@ -40,14 +60,14 @@ num_sol = len(solvers)
 
 r = [20, 30, 40, 50]
 num_r = len(r)
-followers = 2
-n = 50
-m = 50
+followers = 3
+n = 20
+m = 20
 seeds = [1234, 1989, 290889]#, 251091, 240664, 190364, 120863, 101295, 31089, 3573113]
 num_seeds = len(seeds)
 
 problem.set_args(n,m , 100, 10, 10, 5, 20, followers)
-data_directory = "/home/andrea/interdiction/data/"
+data_directory = "./data/"
 output_name = "./test_multifollower" + str(followers) + "_" + str(n) + "_" + str(m) + ".csv"
 
 res = np.zeros((num_r, num_sol, num_seeds))

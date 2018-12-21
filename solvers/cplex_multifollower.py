@@ -106,8 +106,8 @@ class CplexMultifollower:
         print("Optimal value:", cpx.solution.get_objective_value())
         tol = cpx.parameters.mip.tolerances.integrality.get()
         values = cpx.solution.get_values()
-        # for x in range(num_paths):
-        #     print("   Path " + str(x+1) + " has length " + str(values[pi[end_path[x]][x]]))
+        for x in range(num_paths):
+            print("   Path " + str(x+1) + " has length " + str(values[pi[end_path[x]][x]]))
 
         print("\n")
 
