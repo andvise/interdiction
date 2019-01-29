@@ -29,7 +29,7 @@ sol.setname("MIP with CPLEX")
 solvers.append(sol)
 
 # sol = ortools_cp_multifollower.ORToolsCPMultifollower()
-# sol.setname(x"ORtools CP solver")
+# sol.setname("ORtools CP solver")
 # solvers.append(sol)
 
 sol = ortools_sat_multifollower.ORToolsSatMultifollower()
@@ -60,9 +60,9 @@ num_sol = len(solvers)
 
 r = [20, 30, 40, 50]
 num_r = len(r)
-followers = 3
-n = 20
-m = 20
+followers = 5
+n = 5
+m = 5
 seeds = [1234, 1989, 290889]#, 251091, 240664, 190364, 120863, 101295, 31089, 3573113]
 num_seeds = len(seeds)
 
@@ -79,8 +79,8 @@ for k in range(0, num_r):
     for i in range(0, num_seeds):
         problem.arcs_creator(seeds[i])
         data_name = data_directory + "data_multi_" + str(followers) + "_" + str(i)
-        problem.write_dzn_file(data_name+ ".dzn")
-        problem.write_dat_file(data_name+ ".dat")
+        problem.write_dzn_file(data_name + ".dzn")
+        problem.write_dat_file(data_name + ".dat")
         for j in range(0, num_sol):
             start_time = time.time()
             solvers[j].solve(data_name)

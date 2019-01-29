@@ -76,8 +76,8 @@ class CplexMultifollower:
                         senses=["L"],
                         rhs=[length_[j]])
 
-        # Type of Benders decomposition required
-        if self.benders == 1:
+        # Type of Benders decomposition used
+        if self.benders == 1:  # different subproblems
             mastervalue = cpx.long_annotations.benders_mastervalue
             idx = cpx.long_annotations.add(
                 name=cpx.long_annotations.benders_annotation,
@@ -87,7 +87,7 @@ class CplexMultifollower:
                 cpx.long_annotations.set_values(idx, objtype,
                                                 [(pi[x][i], mastervalue+1+i)
                                                  for x in range(n)])
-        if self.benders == 2:
+        if self.benders == 2: # single subproblem
             mastervalue = cpx.long_annotations.benders_mastervalue
             idx = cpx.long_annotations.add(
                 name=cpx.long_annotations.benders_annotation,
@@ -97,7 +97,7 @@ class CplexMultifollower:
                 cpx.long_annotations.set_values(idx, objtype,
                                                 [(pi[x][i], mastervalue+1)
                                                  for x in range(n)])
-        elif self.benders == 3:
+        elif self.benders == 3: # auto decomposition
             cpx.parameters.benders.strategy.set(
                 cpx.parameters.benders.strategy.values.full)
 
